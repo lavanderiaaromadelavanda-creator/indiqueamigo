@@ -1,9 +1,3 @@
-Aqui está o código completo e organizado para você copiar e colar no seu arquivo index.html do GitHub.
-
-Ele já contém o título LAVANDERIA AROMA DE LAVANDA, o design moderno que você viu, e toda a lógica de segurança (verificar duplicado na Coluna E e abrir o WhatsApp).
-
-Copie e substitua TODO o conteúdo do seu index.html por este:
-HTML
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -60,7 +54,7 @@ HTML
             if (res.status === "existe") {
                 alert("Ops, este amigo já existe no cadastro da lavanderia. Indique outro amigo!");
             } else {
-                const mensagem = "Olá! Conheça a Lavanderia Aroma de Lavanda, o melhor cuidado para suas roupas!";
+                const mensagem = "Olá! Estou usando a Lavanderia Aroma de Lavanda e lembrei de você! As roupas saem perfeitas e elas sempre fazem promoções incríveis para quem é cliente. Se você for lá lavar, me avisa!";
                 const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent(mensagem);
                 window.open(linkZap, '_blank');
                 alert("Indicação registrada com sucesso!");
