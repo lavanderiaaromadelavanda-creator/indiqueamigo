@@ -1,39 +1,82 @@
+Aqui está o código completo e organizado para você copiar e colar no seu arquivo index.html do GitHub.
+
+Ele já contém o título LAVANDERIA AROMA DE LAVANDA, o design moderno que você viu, e toda a lógica de segurança (verificar duplicado na Coluna E e abrir o WhatsApp).
+
+Copie e substitua TODO o conteúdo do seu index.html por este:
+HTML
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indique um Amigo</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h2 { color: #4a148c; text-align: center; margin-bottom: 5px; }
+        p { text-align: center; color: #666; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background-color: #4a148c; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        button:hover { background-color: #6a1b9a; }
+        .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 20px; }
+    </style>
+</head>
 <body>
-    <h3>Indique um Amigo</h3>
-    <input type="text" id="seuWhatsapp" placeholder="Seu Whatsapp">
+
+<div class="card">
+    <h2>LAVANDERIA AROMA DE LAVANDA</h2>
+    <p>Indique um amigo e ganhe descontos!</p>
+    
+    <input type="text" id="seuWhatsapp" placeholder="Seu WhatsApp (Ex: 11999999999)">
     <input type="text" id="nomeAmigo" placeholder="Nome do Amigo">
-    <input type="text" id="whatsAmigo" placeholder="WhatsApp do Amigo">
-    <button onclick="enviarIndicao()">Enviar Indicação</button>
+    <input type="text" id="whatsAmigo" placeholder="WhatsApp do Amigo (Ex: 11988888888)">
+    
+    <button onclick="enviarIndicao()">ENVIAR INDICAÇÃO ✨</button>
+    
+    <div class="footer">© 2026 Aroma de Lavanda</div>
+</div>
 
-    <script>
-        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzJeFdK5_C39dNKCMAof89uRtrGBbipSapn3ZHcMvRXWh3pXOwB1VkSYE6njo-cXOelUw/exec";
+<script>
+    // COLE O SEU LINK DE IMPLANTAÇÃO AQUI ABAIXO:
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzJeFdK5_C39dNKCMAof89uRtrGBbipSapn3ZHcMvRXWh3pXOwB1VkSYE6njo-cXOelUw/exec";
 
-        function enviarIndicao() {
-            const dados = {
-                seuWhatsapp: document.getElementById('seuWhatsapp').value,
-                nomeAmigo: document.getElementById('nomeAmigo').value,
-                whatsAmigo: document.getElementById('whatsAmigo').value
-            };
+    function enviarIndicao() {
+        const btn = document.querySelector('button');
+        btn.innerText = "Enviando...";
+        btn.disabled = true;
 
-            fetch(URL_SCRIPT, {
-                method: 'POST',
-                body: JSON.stringify(dados)
-            })
-            .then(res => res.json())
-            .then(res => {
-                if (res.status === "existe") {
-                    alert("Ops, este amigo já existe no cadastro da lavanderia. Indique outro amigo!");
-                } else {
-                    const mensagem = "Olá! Conheça a Lavanderia Aroma de Lavanda!";
-                    const linkZap = "https://wa.me/55" + dados.whatsAmigo.replace(/\D/g, '') + "?text=" + encodeURIComponent(mensagem);
-                    window.open(linkZap, '_blank');
-                    alert("Indicação registrada com sucesso!");
-                }
-            })
-            .catch(err => alert("Erro ao enviar, tente novamente."));
-        }
-    </script>
+        const dados = {
+            seuWhatsapp: document.getElementById('seuWhatsapp').value,
+            nomeAmigo: document.getElementById('nomeAmigo').value,
+            whatsAmigo: document.getElementById('whatsAmigo').value.replace(/\D/g, '')
+        };
+
+        fetch(URL_SCRIPT, {
+            method: 'POST',
+            body: JSON.stringify(dados)
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.status === "existe") {
+                alert("Ops, este amigo já existe no cadastro da lavanderia. Indique outro amigo!");
+            } else {
+                const mensagem = "Olá! Conheça a Lavanderia Aroma de Lavanda, o melhor cuidado para suas roupas!";
+                const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent(mensagem);
+                window.open(linkZap, '_blank');
+                alert("Indicação registrada com sucesso!");
+                // Limpar campos
+                document.getElementById('seuWhatsapp').value = "";
+                document.getElementById('nomeAmigo').value = "";
+                document.getElementById('whatsAmigo').value = "";
+            }
+        })
+        .catch(err => alert("Erro ao enviar. Tente novamente."))
+        .finally(() => {
+            btn.innerText = "ENVIAR INDICAÇÃO ✨";
+            btn.disabled = false;
+        });
+    }
+</script>
+
 </body>
 </html>
