@@ -9,7 +9,8 @@
             font-family: Arial, sans-serif; 
             background-color: #f4f4f9; 
             display: flex; 
-            justify-content: center; 
+            flex-direction: column;
+            align-items: center; 
             padding: 20px 10px; 
             margin: 0; 
             min-height: 100vh;
@@ -22,7 +23,8 @@
             width: 100%; 
             max-width: 450px;
         }
-        h2 { color: #4a148c; text-align: center; margin: 0 0 20px 0; font-size: 22px; }
+        h2 { color: #4a148c; text-align: center; margin: 0 0 5px 0; font-size: 22px; }
+        .emoji-cesto { text-align: center; font-size: 30px; margin-bottom: 20px; }
         input { 
             width: 100%; 
             padding: 16px; 
@@ -44,6 +46,8 @@
             cursor: pointer; 
             margin-top: 15px;
         }
+        .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 25px; }
+        
         /* Estilo do Modal */
         #modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
         .modal-box { background:white; padding:30px; border-radius:20px; width:85%; max-width:320px; text-align:center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
@@ -54,11 +58,14 @@
 
 <div class="card">
     <h2>LAVANDERIA AROMA DE LAVANDA</h2>
+    <div class="emoji-cesto">🧺</div>
     <input type="text" id="seuWhatsapp" placeholder="Seu WhatsApp (Ex: 11999999999)">
     <input type="text" id="nomeAmigo" placeholder="Nome do Amigo">
     <input type="text" id="whatsAmigo" placeholder="WhatsApp do Amigo (Ex: 11988888888)">
     <button id="btnEnviar" onclick="enviarIndicao()">ENVIAR INDICAÇÃO ✨</button>
 </div>
+
+<div class="footer">© 2026 Lavanderia Aroma de Lavanda</div>
 
 <div id="modal">
     <div class="modal-box">
@@ -69,7 +76,6 @@
 </div>
 
 <script>
-    // Cole aqui o seu link do Apps Script (terminado em /exec)
     const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwQW5_V-1iKGku2_mb-eaOVGKNSTbfzv8doIE4cO5L6sPXRgYHJUaacqfN0vr9c9LWejg/exec";
 
     function mostrarModal(msg) {
@@ -101,9 +107,9 @@
         .then(res => res.json())
         .then(res => {
             if (res.status === "existe") {
-                mostrarModal("Ops! Este amigo já consta na nossa Agenda e já é nosso cliente.");
+                mostrarModal("Ops! Este amigo já consta na nossa Agenda e já é nosso cliente. Indique outro amigo!");
             } else {
-                window.open("https://wa.me/55" + dados.whatsAmigo + "?text=Olá! Te indiquei na Lavanderia Aroma de Lavanda!", '_blank');
+                window.open("https://wa.me/55" + dados.whatsAmigo + "?text=Olá! Estou usando a Lavanderia Aroma de Lavanda e lembrei de você! As roupas saem perfeitas e elas sempre fazem promoções incríveis para quem é cliente. Se você for lá lavar, me avisa!", '_blank');
                 mostrarModal("Indicação registrada com sucesso!");
                 document.getElementById('seuWhatsapp').value = "";
                 document.getElementById('nomeAmigo').value = "";
