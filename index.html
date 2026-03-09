@@ -64,7 +64,7 @@
         .then(res => res.json())
         .then(res => {
             if (res.status === "existe") {
-                mostrarModal("Ops! Este amigo já existe no cadastro da lavanderia. Indique outro amigo.");
+                mostrarModal("Olá! Estou usando a Lavanderia Aroma de Lavanda e lembrei de você! As roupas saem perfeitas e elas sempre fazem promoções incríveis para quem é cliente. Se você for lá lavar, me avisa!");
             } else {
                 const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent("Olá! Te indiquei na Lavanderia Aroma de Lavanda!");
                 window.open(linkZap, '_blank');
