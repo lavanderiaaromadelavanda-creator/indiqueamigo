@@ -24,41 +24,60 @@
     <input type="text" id="nomeAmigo" placeholder="Nome do Amigo">
     <input type="text" id="whatsAmigo" placeholder="WhatsApp do Amigo (Ex: 11988888888)">
     
-    <button onclick="enviarIndicao()">ENVIAR INDICAÇÃO ✨</button>
+    <button id="btnEnviar" onclick="enviarIndicao()">ENVIAR INDICAÇÃO ✨</button>
     
     <div class="footer">© 2026 Aroma de Lavanda</div>
 </div>
 
 <script>
     // --- COLE O SEU LINK DO APPS SCRIPT AQUI ABAIXO ---
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxgV7Lkr8Pb-ZJgh3j2We_hlCJfILlxJtA0qnBkESjNBf_5sSY-_QUNQ43ZjO4KX88/exec";
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbydHnQGo8y2oL6ScQLv09bRR3wnEMJpHkmLFJnsjH5XpBcXn5U0d6XmDYH_GBGVB0-pag/exec";
 
     function enviarIndicao() {
+        const btn = document.getElementById('btnEnviar');
         const dados = {
             seuWhatsapp: document.getElementById('seuWhatsapp').value,
             nomeAmigo: document.getElementById('nomeAmigo').value,
             whatsAmigo: document.getElementById('whatsAmigo').value.replace(/\D/g, '')
         };
 
-        // 1. Envia para a planilha
+        if(!dados.seuWhatsapp || !dados.nomeAmigo || !dados.whatsAmigo) {
+            alert("Por favor, preencha todos os campos!");
+            return;
+        }
+
+        btn.innerText = "Verificando...";
+        btn.disabled = true;
+
         fetch(URL_SCRIPT, {
             method: 'POST',
-            mode: 'no-cors',
             body: JSON.stringify(dados)
+        })
+        .then(res => res.json())
+        .then(res => {
+            if (res.status === "existe") {
+                alert("Ops! Este amigo já consta na nossa Agenda e já é nosso cliente. Tente indicar outro amigo!");
+            } else if (res.status === "sucesso") {
+                alert("Indicação registrada com sucesso! Abrindo WhatsApp...");
+                const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent("Olá! Te indiquei na Lavanderia Aroma de Lavanda!");
+                window.open(linkZap, '_blank');
+                
+                // Limpar campos
+                document.getElementById('seuWhatsapp').value = "";
+                document.getElementById('nomeAmigo').value = "";
+                document.getElementById('whatsAmigo').value = "";
+            } else {
+                alert("Erro: " + res.msg);
+            }
+        })
+        .catch(err => {
+            alert("Erro ao conectar. Tente novamente.");
+            console.error(err);
+        })
+        .finally(() => {
+            btn.innerText = "ENVIAR INDICAÇÃO ✨";
+            btn.disabled = false;
         });
-
-        // 2. Abre o WhatsApp do amigo logo em seguida
-        const mensagem = "Olá! Te indiquei na Lavanderia Aroma de Lavanda!";
-        const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent(mensagem);
-        window.open(linkZap, '_blank');
-
-        // 3. Feedback visual
-        alert("Indicação enviada! Abrindo WhatsApp...");
-        
-        // Limpar campos
-        document.getElementById('seuWhatsapp').value = "";
-        document.getElementById('nomeAmigo').value = "";
-        document.getElementById('whatsAmigo').value = "";
     }
 </script>
 
