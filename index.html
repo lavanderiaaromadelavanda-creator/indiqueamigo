@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indique um Amigo</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        body { font-family: sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 10px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
         h2 { color: #4a148c; text-align: center; margin-bottom: 5px; }
         p { text-align: center; color: #666; margin-bottom: 20px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background-color: #4a148c; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        button:hover { background-color: #6a1b9a; }
-        .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 20px; }
+        button { width: 100%; padding: 15px; background-color: #4a148c; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        /* Estilo do Modal Personalizado */
+        #meuModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
+        .modal-conteudo { background:white; padding:20px; border-radius:15px; width:85%; max-width:300px; text-align:center; }
+        .btn-modal { background:#4a148c; color:white; border:none; padding:10px 25px; border-radius:8px; margin-top:15px; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -20,57 +22,57 @@
 <div class="card">
     <h2>LAVANDERIA AROMA DE LAVANDA</h2>
     <p>Indique um amigo e ganhe descontos!</p>
-    
     <input type="text" id="seuWhatsapp" placeholder="Seu WhatsApp (Ex: 11999999999)">
     <input type="text" id="nomeAmigo" placeholder="Nome do Amigo">
     <input type="text" id="whatsAmigo" placeholder="WhatsApp do Amigo (Ex: 11988888888)">
-    
     <button onclick="enviarIndicao()">ENVIAR INDICAÇÃO ✨</button>
-    
-    <div class="footer">© 2026 Aroma de Lavanda</div>
+</div>
+
+<div id="meuModal">
+    <div class="modal-conteudo">
+        <h4 style="color:#4a148c; margin:0;">Lavanderia Aroma de Lavanda</h4>
+        <p id="textoModal"></p>
+        <button class="btn-modal" onclick="fecharModal()">OK</button>
+    </div>
 </div>
 
 <script>
-    // COLE O SEU LINK DE IMPLANTAÇÃO AQUI ABAIXO:
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzaA8r4_fMePwf2aNKATZ8GNX29hB4ChfAZ6KhioEBIyuZ4sW1lRH8Y-vnKzbzvWv6Dgg/exec";
+    const URL_SCRIPT = "COLE_AQUI_O_SEU_LINK_DO_APPS_SCRIPT";
+
+    function mostrarModal(texto) {
+        document.getElementById('textoModal').innerText = texto;
+        document.getElementById('meuModal').style.display = 'flex';
+    }
+    function fecharModal() {
+        document.getElementById('meuModal').style.display = 'none';
+    }
 
     function enviarIndicao() {
         const btn = document.querySelector('button');
-        btn.innerText = "Enviando...";
-        btn.disabled = true;
-
         const dados = {
             seuWhatsapp: document.getElementById('seuWhatsapp').value,
             nomeAmigo: document.getElementById('nomeAmigo').value,
             whatsAmigo: document.getElementById('whatsAmigo').value.replace(/\D/g, '')
         };
 
-        fetch(URL_SCRIPT, {
-            method: 'POST',
-            body: JSON.stringify(dados)
-        })
+        btn.innerText = "Enviando...";
+        fetch(URL_SCRIPT, { method: 'POST', body: JSON.stringify(dados) })
         .then(res => res.json())
         .then(res => {
             if (res.status === "existe") {
-                alert("Ops, este amigo já existe no cadastro da lavanderia. Indique outro amigo!");
+                mostrarModal("Ops! Este amigo já existe no cadastro da lavanderia. Indique outro amigo.");
             } else {
-                const mensagem = "Olá! Estou usando a Lavanderia Aroma de Lavanda e lembrei de você! As roupas saem perfeitas e elas sempre fazem promoções incríveis para quem é cliente. Se você for lá lavar, me avisa!";
-                const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent(mensagem);
+                const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent("Olá! Te indiquei na Lavanderia Aroma de Lavanda!");
                 window.open(linkZap, '_blank');
-                alert("Indicação registrada com sucesso!");
-                // Limpar campos
+                mostrarModal("Indicação registrada com sucesso!");
                 document.getElementById('seuWhatsapp').value = "";
                 document.getElementById('nomeAmigo').value = "";
                 document.getElementById('whatsAmigo').value = "";
             }
         })
-        .catch(err => alert("Erro ao enviar. Tente novamente."))
-        .finally(() => {
-            btn.innerText = "ENVIAR INDICAÇÃO ✨";
-            btn.disabled = false;
-        });
+        .catch(() => mostrarModal("Erro ao enviar. Tente novamente."))
+        .finally(() => btn.innerText = "ENVIAR INDICAÇÃO ✨");
     }
 </script>
-
 </body>
 </html>
