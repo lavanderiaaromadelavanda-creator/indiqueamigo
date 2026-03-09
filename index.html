@@ -109,7 +109,7 @@
                 mostrarModal("Ops! Este amigo já consta na nossa Agenda e já é nosso cliente. Indique outro amigo!");
             } else {
                 // Link otimizado para abrir direto no App ou WhatsApp Web
-                const mensagem = "Olá! Te indiquei na Lavanderia Aroma de Lavanda!";
+                const mensagem = "Olá! Estou usando a Lavanderia Aroma de Lavanda e lembrei de você! As roupas saem perfeitas e elas sempre fazem promoções incríveis para quem é cliente. Se você for lá lavar, me avisa!";
                 const linkZap = "https://api.whatsapp.com/send?phone=55" + dados.whatsAmigo + "&text=" + encodeURIComponent(mensagem);
                 
                 window.open(linkZap, '_blank');
