@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h3>Indique um Amigo</h3>
+    <input type="text" id="seuWhatsapp" placeholder="Seu Whatsapp">
+    <input type="text" id="nomeAmigo" placeholder="Nome do Amigo">
+    <input type="text" id="whatsAmigo" placeholder="WhatsApp do Amigo">
+    <button onclick="enviarIndicao()">Enviar Indicação</button>
 
+    <script>
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzJeFdK5_C39dNKCMAof89uRtrGBbipSapn3ZHcMvRXWh3pXOwB1VkSYE6njo-cXOelUw/exec";
+
+        function enviarIndicao() {
+            const dados = {
+                seuWhatsapp: document.getElementById('seuWhatsapp').value,
+                nomeAmigo: document.getElementById('nomeAmigo').value,
+                whatsAmigo: document.getElementById('whatsAmigo').value
+            };
+
+            fetch(URL_SCRIPT, {
+                method: 'POST',
+                body: JSON.stringify(dados)
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.status === "existe") {
+                    alert("Ops, este amigo já existe no cadastro da lavanderia. Indique outro amigo!");
+                } else {
+                    const mensagem = "Olá! Conheça a Lavanderia Aroma de Lavanda!";
+                    const linkZap = "https://wa.me/55" + dados.whatsAmigo.replace(/\D/g, '') + "?text=" + encodeURIComponent(mensagem);
+                    window.open(linkZap, '_blank');
+                    alert("Indicação registrada com sucesso!");
+                }
+            })
+            .catch(err => alert("Erro ao enviar, tente novamente."));
+        }
+    </script>
+</body>
+</html>
