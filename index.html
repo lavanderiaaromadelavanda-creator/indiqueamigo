@@ -7,7 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; padding-top: 10px; margin: 0; }
         .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { color: #4a148c; text-align: center; margin: 0 0 5px 0; }
+        h2 { color: #4a148c; text-align: center; margin: 0 0 5px 0; font-size: 20px; }
         p { text-align: center; color: #666; margin-bottom: 20px; }
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background-color: #4a148c; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
@@ -30,7 +30,8 @@
 </div>
 
 <script>
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbweo0cpPmzDbToHsvbLdowSRtvnjJMx7IU5_8EjknkfF_BCrqF29h34_L7kqgTdD5f45Q/exec";
+    // --- COLE O SEU LINK DO APPS SCRIPT AQUI ABAIXO ---
+    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxtU1gXQvlmZwzVY_JNk5OZkNGzCtEJOxs_uNjAADBLHhUIK1khIuy5jjaIlE8v4OphnA/exec";
 
     function enviarIndicao() {
         const dados = {
@@ -39,16 +40,25 @@
             whatsAmigo: document.getElementById('whatsAmigo').value.replace(/\D/g, '')
         };
 
+        // 1. Envia para a planilha
         fetch(URL_SCRIPT, {
             method: 'POST',
-            mode: 'no-cors', // Isso evita bloqueios de segurança do navegador
+            mode: 'no-cors',
             body: JSON.stringify(dados)
-        })
-        .finally(() => {
-            // Independente da resposta do script, abrimos o WhatsApp
-            const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent("Olá! Te indiquei na Lavanderia Aroma de Lavanda!");
-            window.location.href = linkZap; // Abre direto no WhatsApp
         });
+
+        // 2. Abre o WhatsApp do amigo logo em seguida
+        const mensagem = "Olá! Te indiquei na Lavanderia Aroma de Lavanda!";
+        const linkZap = "https://wa.me/55" + dados.whatsAmigo + "?text=" + encodeURIComponent(mensagem);
+        window.open(linkZap, '_blank');
+
+        // 3. Feedback visual
+        alert("Indicação enviada! Abrindo WhatsApp...");
+        
+        // Limpar campos
+        document.getElementById('seuWhatsapp').value = "";
+        document.getElementById('nomeAmigo').value = "";
+        document.getElementById('whatsAmigo').value = "";
     }
 </script>
 
